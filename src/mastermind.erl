@@ -25,6 +25,8 @@ generate_solution() ->
 
 generate_solution(0, _, Acc) -> Acc;
 generate_solution(Remaining, Choices, Acc) ->
+  <<A:32, B:32, C:32>> = crypto:strong_rand_bytes(12),
+  random:seed(A, B, C),
   Position = random:uniform(length(Choices)),
   Choice = lists:nth(Position, Choices),
   NewAcc = [Choice | Acc],
