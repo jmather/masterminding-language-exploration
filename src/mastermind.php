@@ -1,8 +1,6 @@
 #!/usr/bin/env php
 <?php
 
-require __DIR__.'/mastermind-lib.php';
-
 // Set up our game
 define('SOLUTION_LENGTH', 4);
 define('MAX_GUESSES', 10);
