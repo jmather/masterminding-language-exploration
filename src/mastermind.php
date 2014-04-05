@@ -12,7 +12,7 @@ $choices = array('A', 'B', 'C', 'D', 'E', 'F');
 
 // Library code
 function gameIntro($choices) {
-    echo "Let's play MasterMind! The rules are easy, I promise.\r\n";
+    echo "Let's play Mastermind! The rules are easy, I promise.\r\n";
     echo "I will pick " . SOLUTION_LENGTH . " letters out of a possible " . count($choices).".\r\n";
     echo "You will then get " . MAX_GUESSES . " chances to guess which letters I picked.\r\n";
     echo "For each letter you guess, I will answer as follows:\r\n";

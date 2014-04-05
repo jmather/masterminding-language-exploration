@@ -9,7 +9,7 @@ GUESS_PRESENT = '*'
 CHOICES = %w(A B C D E F)
 
 def game_intro
-  print "Let's play MasterMind! The rules are easy, I promise.\r\n"
+  print "Let's play Mastermind! The rules are easy, I promise.\r\n"
   print "I will pick " + SOLUTION_LENGTH.to_s + " letters out of a possible " + CHOICES.size.to_s + ".\r\n"
   print "You will then get " + MAX_GUESSES.to_s + " chances to guess which letters I picked.\r\n"
   print "For each letter you guess, I will answer as follows:\r\n"

@@ -1,4 +1,4 @@
--module(mastermind).
+-module(Mastermind).
 
 -export([start_game/0]).
 
@@ -10,7 +10,7 @@
 -define(CHOICES, "ABCDEF").
 
 game_intro() ->
-  io:format("Let's play MasterMind! The rules are easy, I promise.~n"),
+  io:format("Let's play Mastermind! The rules are easy, I promise.~n"),
   io:format("I will pick ~B letters out of a possible ~B.~n", [?SOLUTION_LENGTH, length(?CHOICES)]),
   io:format("You will then get ~B chances to guess which letters I picked.~n", [?MAX_GUESSES]),
   io:format("For each letter you guess, I will answer as follows:~n"),
