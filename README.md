@@ -3,6 +3,14 @@ What you're missing if you're only doing PHP
 
 Code from the talk
 
+Now before you start, yes, this is not a full mastermind implementation. The nuances would be fun to add,
+however I wanted demoing the game running to go quickly under pressure, so the rules are a little simpler.
+
+Assumptions the game makes that aren't in the rules:
+- The game master will always only use one peg of the same color.
+- The game master's analysis of your guess will always be in the same order as your guess.
+- We're offering, in general, more guesses and less variety in pegs, than is typically given.
+
 The game: Mastermind
 --------------------
 
