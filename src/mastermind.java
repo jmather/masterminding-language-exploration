@@ -1,3 +1,5 @@
+package com.jmather.mastermind;
+
 import java.io.*;
 import java.lang.Object;
 import java.lang.Override;
