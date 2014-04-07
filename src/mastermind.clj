@@ -27,12 +27,12 @@
   [choices
    picked
    remaining]
-  (if (> remaining 0)
+  (if (= remaining 0)
+    (clojure.string/join "" picked)
     (loop [pick (rand-nth choices)]
       (if (= -1 (.indexOf picked pick))
         (generateSolutionWithArgs choices (conj picked pick) (- remaining 1))
-        (recur (rand-nth choices))))
-    (clojure.string/join "" picked)))
+        (recur (rand-nth choices))))))
 
 (defn generateSolution
   "Generates a solution"
@@ -78,12 +78,15 @@
     (if (= remaining 0)
       (clojure.string/join "" (reverse result))
       (let [solution_letter (subs solution 0 1)
-            guess_letter (subs guess 0 1)]
+            guess_letter (subs guess 0 1)
+            next_solution (subs solution 1)
+            next_guess (subs guess 1)
+            next_iteration (- remaining 1)]
         (if (= solution_letter guess_letter)
-          (recur (subs solution 1) (subs guess 1) (- remaining 1) (conj result GUESS_RIGHT))
+          (recur next_solution next_guess next_iteration (conj result GUESS_RIGHT))
           (if (> (.indexOf full_solution guess_letter) -1)
-            (recur (subs solution 1) (subs guess 1) (- remaining 1) (conj result GUESS_PRESENT))
-            (recur (subs solution 1) (subs guess 1) (- remaining 1) (conj result GUESS_WRONG))
+            (recur next_solution next_guess (- remaining 1) (conj result GUESS_PRESENT))
+            (recur next_solution next_guess next_iteration (conj result GUESS_WRONG))
             ))))))
 
 
