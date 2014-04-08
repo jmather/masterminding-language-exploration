@@ -55,20 +55,15 @@ function getGuess(callback) {
 
 function askGuess(callback) {
     console.log("Available pegs: " + CHOICES.join(', '));
-    var prompt = require('prompt');
-    prompt.start();
-    prompt.message = '';
-    prompt.delimiter = "";
-    prompt.colors = false;
-    prompt.get({
-        properties: {
-            guess: {
-                message: "Enter your guess (pick " + SOLUTION_LENGTH + "): ",
-                delimiter: ""
-            }
-        }
-    }, function(err, result) {
-        callback(result.guess.trim().toUpperCase());
+    var readline = require('readline');
+    var io = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+        terminal: false
+    });
+
+    io.question("Enter your guess (pick " + SOLUTION_LENGTH + "): ", function(answer) {
+        callback(answer.trim().toUpperCase());
     });
 }
 
