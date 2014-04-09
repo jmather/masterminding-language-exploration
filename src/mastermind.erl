@@ -1,4 +1,4 @@
--module(Mastermind).
+-module(mastermind).
 
 -export([start_game/0]).
 
@@ -21,17 +21,16 @@ game_intro() ->
 
 
 generate_solution() ->
+  <<A:32, B:32, C:32>> = crypto:strong_rand_bytes(12),
+  random:seed(A, B, C),
   generate_solution(?SOLUTION_LENGTH, ?CHOICES, []).
 
 generate_solution(0, _, Acc) -> Acc;
 generate_solution(Remaining, Choices, Acc) ->
-  <<A:32, B:32, C:32>> = crypto:strong_rand_bytes(12),
-  random:seed(A, B, C),
   Position = random:uniform(length(Choices)),
   Choice = lists:nth(Position, Choices),
-  NewAcc = [Choice | Acc],
   NewChoices = lists:delete(Choice, Choices),
-  generate_solution(Remaining - 1, NewChoices, NewAcc).
+  generate_solution(Remaining - 1, NewChoices, [Choice | Acc]).
 
 
 get_guess() ->
