@@ -19,8 +19,7 @@
     (println "\t" GUESS_WRONG "means you got it compltely wrong.")
     (println "\t" GUESS_PRESENT "means you guessed a letter I used, but it's in the wrong position.")
     (println "\t" GUESS_RIGHT "means you guessed that letter right!")
-    (println "")
-    ))
+    (println "")))
 
 (defn generateSolutionWithArgs
   "Generates a solution from the passed arguments"
@@ -86,8 +85,7 @@
           (recur next_solution next_guess next_iteration (conj result GUESS_RIGHT))
           (if (> (.indexOf full_solution guess_letter) -1)
             (recur next_solution next_guess (- remaining 1) (conj result GUESS_PRESENT))
-            (recur next_solution next_guess next_iteration (conj result GUESS_WRONG))
-            ))))))
+            (recur next_solution next_guess next_iteration (conj result GUESS_WRONG))))))))
 
 
 (gameIntro)
