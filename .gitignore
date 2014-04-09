@@ -1,3 +1,5 @@
 *.beam
 *.class
 *.jar
+*.hi
+*.o
