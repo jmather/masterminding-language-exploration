@@ -18,7 +18,7 @@ def gameIntro() {
 }
 
 def generateSolution() {
-    def picked = [];
+    def picked = []
     def random = new Random()
     while (picked.size() < SOLUTION_LENGTH) {
         def rnd = random.nextInt(CHOICES.size())
@@ -27,7 +27,7 @@ def generateSolution() {
             continue;
         }
 
-        picked.add(choice);
+        picked.add(choice)
     }
 
     return picked.join('')
