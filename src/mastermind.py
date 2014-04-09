@@ -9,8 +9,6 @@ GUESS_RIGHT = 'X'
 GUESS_PRESENT = '*'
 CHOICES = ['A', 'B', 'C', 'D', 'E', 'F']
 
-
-
 # Library code
 def game_intro():
     print "Let's play Mastermind! The rules are easy, I promise."
@@ -25,19 +23,23 @@ def game_intro():
 def generate_solution():
     choices = list(CHOICES)
     picked = []
+
     while len(picked) < SOLUTION_LENGTH:
         choice = random.choice(choices)
         choices.remove(choice)
         picked.append(choice)
+
     return ''.join(picked)
 
 def get_guess():
     import re
     pattern = re.compile('[^' + ''.join(CHOICES) + ']')
     guess = ask_guess()
+
     while pattern.match(guess) or len(guess) != SOLUTION_LENGTH:
         print "We were unable to understand your input. Please enter only the letters of your guess and press enter."
         guess = ask_guess()
+
     return guess
 
 def ask_guess():
@@ -47,6 +49,7 @@ def ask_guess():
 
 def analyze_guess(solution, guess):
     result = []
+
     for i in range(SOLUTION_LENGTH):
         solution_letter = solution[i]
         guess_letter = guess[i]
@@ -57,9 +60,10 @@ def analyze_guess(solution, guess):
             result.append(GUESS_PRESENT)
         else:
             result.append(GUESS_WRONG)
+
     return ''.join(result)
 
-
+# Game code
 game_intro()
 
 solution = generate_solution()

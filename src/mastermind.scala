@@ -10,6 +10,7 @@ val GUESS_RIGHT = "X"
 val GUESS_PRESENT = "*"
 val CHOICES = Array[String]("A", "B", "C", "D", "E", "F")
 
+// Library code
 def gameIntro() {
   println("Let's play Mastermind! The rules are easy, I promise.")
   println("I will pick " + SOLUTION_LENGTH + " letters out of a possible " + CHOICES.length + ".")
@@ -24,6 +25,7 @@ def gameIntro() {
 def generateSolutionPicker(arr: Array[String], rand: Random): Array[String] = {
   val rnd = rand.nextInt(CHOICES.length)
   val choice = CHOICES(rnd)
+
   if (arr.length == 0 || arr.contains(choice) == false) {
     return arr :+ choice
   }
@@ -35,6 +37,7 @@ def generateSolution(): String = {
   var picked = Array[String]()
   val random = new Random()
 
+  // Why use another function? Because scala has no BREAK
   while (picked.length < SOLUTION_LENGTH) {
     picked = generateSolutionPicker(picked, random)
   }
@@ -58,16 +61,17 @@ def isValidGuess(str: String): Boolean = {
 
 def getGuess(): String = {
   val guess = askGuess()
+
   if (!isValidGuess(guess)) {
     println("We were unable to understand your input. Please enter only the letters of your guess and press enter.")
     getGuess()
   }
+
   guess
 }
 
 def askGuess(): String = {
-  val choices = CHOICES.mkString(", ")
-  println("Available pegs: " + choices)
+  println("Available pegs: " + CHOICES.mkString(", "))
   val data = readLine("Enter your guess, (pick " + SOLUTION_LENGTH + "): ")
   data.trim.toUpperCase
 }
@@ -91,6 +95,7 @@ def analyzeGuess(solution: String, guess: String): String = {
   result.mkString("")
 }
 
+// Game code
 object mastermind {
   def main(args: Array[String]) {
     gameIntro()

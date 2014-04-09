@@ -23,11 +23,7 @@ class mastermind {
     static String GUESS_PRESENT = "*";
     static String[] CHOICES = {"A", "B", "C", "D", "E", "F"};
 
-    public static void main(String[] args) {
-        mastermind game = new mastermind();
-        game.run();
-    }
-
+    // Helper code
     public void print(String output) {
         System.out.println(output);
     }
@@ -42,6 +38,7 @@ class mastermind {
         return str;
     }
 
+    // Library code
     protected void gameIntro() {
         print("Let's play Mastermind! The rules are easy, I promise.");
         print("I will pick " + String.valueOf(SOLUTION_LENGTH) + " letters out of a possible " + String.valueOf(CHOICES.length) + ".");
@@ -59,11 +56,12 @@ class mastermind {
         String response = "";
 
         while (picked.size() < SOLUTION_LENGTH) {
-            int pos = r.nextInt(CHOICES.length);
-            String choice = CHOICES[pos];
+            String choice = CHOICES[r.nextInt(CHOICES.length)];
+
             if (picked.contains(choice)) {
                 continue;
             }
+
             picked.add(choice);
         }
 
@@ -74,11 +72,13 @@ class mastermind {
         Pattern p = Pattern.compile("[^"+arrayToString(CHOICES) + "]");
         String guess = askGuess();
         Matcher m = p.matcher(guess);
+
         while (m.matches() || guess.length() != SOLUTION_LENGTH) {
             print("We were unable to understand your input. Please enter only the letters of your guess and press enter.");
             guess = askGuess();
             m = p.matcher(guess);
         }
+
         return guess;
     }
 
@@ -102,6 +102,7 @@ class mastermind {
 
     protected String analyzeGuess(String solution, String guess) {
         String result = "";
+
         for (int i = 0; i < SOLUTION_LENGTH; i++) {
             String solution_letter = solution.substring(i, i + 1);
             String guess_letter = guess.substring(i, i + 1);
@@ -118,6 +119,7 @@ class mastermind {
         return result;
     }
 
+    // Game code
     public void run() {
         gameIntro();
 
@@ -143,5 +145,10 @@ class mastermind {
 
             guesses++;
         }
+    }
+
+    public static void main(String[] args) {
+        mastermind game = new mastermind();
+        game.run();
     }
 }

@@ -9,7 +9,7 @@
 -define(GUESS_PRESENT, "*").
 -define(CHOICES, "ABCDEF").
 
-
+% Library code
 game_intro() ->
   io:format("Let's play Mastermind! The rules are easy, I promise.~n"),
   io:format("I will pick ~B letters out of a possible ~B.~n", [?SOLUTION_LENGTH, length(?CHOICES)]),
@@ -26,10 +26,10 @@ generate_solution() ->
   random:seed(A, B, C),
   generate_solution(?SOLUTION_LENGTH, ?CHOICES, []).
 
+% Actually the return result is backwards, but we don't really care...
 generate_solution(0, _, Acc) -> Acc;
 generate_solution(Remaining, Choices, Acc) ->
-  Position = random:uniform(length(Choices)),
-  Choice = lists:nth(Position, Choices),
+  Choice = lists:nth(random:uniform(length(Choices)), Choices),
   NewChoices = lists:delete(Choice, Choices),
   generate_solution(Remaining - 1, NewChoices, [Choice | Acc]).
 
@@ -55,6 +55,7 @@ get_guess() ->
       get_guess()
   end.
 
+
 ask_guess() ->
   ChoiceDisplay = [hd(?CHOICES) | lists:flatmap(fun(X) -> [", ", X] end, tl(?CHOICES))],
   io:format("Available pegs: ~s~n", [ChoiceDisplay]),
@@ -78,6 +79,7 @@ analyze_guess(Solution, [_ | SolTail], [GuessChar | GuessTail], Acc) ->
   end.
 
 
+% Game code
 start_game() ->
   game_intro(),
   game_loop(generate_solution(), ?MAX_GUESSES).

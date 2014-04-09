@@ -8,6 +8,7 @@ var GUESS_RIGHT = 'X';
 var GUESS_PRESENT = '*';
 var CHOICES = ['A', 'B', 'C', 'D', 'E', 'F'];
 
+// Library code
 void gameIntro() {
   stdout.writeln("Let's play Mastermind! The rules are easy, I promise.");
   stdout.writeln("I will pick $SOLUTION_LENGTH letters out of a possible ${CHOICES.length}.");
@@ -24,8 +25,7 @@ String generateSolution() {
   var picked = [];
 
   while (picked.length < SOLUTION_LENGTH) {
-    var i = random.nextInt(CHOICES.length);
-    var choice = CHOICES[i];
+    var choice = CHOICES[random.nextInt(CHOICES.length)];
 
     if (picked.contains(choice)) {
       continue;
@@ -40,6 +40,7 @@ String generateSolution() {
 String getGuess() {
   var matcher = new RegExp("[^${CHOICES.join('')}]");
   var guess = askGuess();
+
   while(matcher.hasMatch(guess) || guess.length != SOLUTION_LENGTH) {
     stdout.writeln("We were unable to understand your input. Please enter only the letters of your guess and press enter.");
     guess = askGuess();
@@ -73,6 +74,7 @@ String analyzeGuess(String solution, String guess) {
   return result.join('');
 }
 
+// Game code
 void main(List<String> args) {
   gameIntro();
 

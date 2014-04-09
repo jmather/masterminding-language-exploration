@@ -1,13 +1,11 @@
 #!/usr/bin/env php
 <?php
 
-// Set up our game
 define('SOLUTION_LENGTH', 4);
 define('MAX_GUESSES', 10);
 define('GUESS_WRONG', '_');
 define('GUESS_RIGHT', 'X');
 define('GUESS_PRESENT', '*');
-
 $choices = array('A', 'B', 'C', 'D', 'E', 'F');
 
 // Library code
@@ -32,10 +30,12 @@ function getGuess($choices)
 {
     $allowed_match = '/[^' . implode('', $choices) . ']/';
     $guess = askGuess($choices);
+
     while (preg_match($allowed_match, $guess) || strlen($guess) != SOLUTION_LENGTH) {
         echo "We were unable to understand your input. Please enter only the letters of your guess and press enter.\r\n";
         $guess = askGuess($choices);
     }
+
     return $guess;
 }
 
@@ -64,8 +64,7 @@ function analyzeGuess($solution, $guess) {
     return $result;
 }
 
-
-// Begin game
+// Game code
 gameIntro($choices);
 
 $solution = generateSolution($choices);

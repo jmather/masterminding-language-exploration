@@ -8,6 +8,7 @@ GUESS_RIGHT = 'X'
 GUESS_PRESENT = '*'
 CHOICES = %w(A B C D E F)
 
+# Library code
 def game_intro
   print "Let's play Mastermind! The rules are easy, I promise.\r\n"
   print "I will pick " + SOLUTION_LENGTH.to_s + " letters out of a possible " + CHOICES.size.to_s + ".\r\n"
@@ -26,10 +27,12 @@ end
 def get_guess
   regex = Regexp.new('^[' + CHOICES.join('') + ']+$')
   guess = ask_guess
+
   until regex.match(guess) and guess.size == SOLUTION_LENGTH
     puts 'We were unable to understand your input. Please enter only the letters of your guess and press enter.'
     guess = ask_guess
   end
+
   guess
 end
 
@@ -41,6 +44,7 @@ end
 
 def analyze_guess(solution, guess)
   result = ''
+
   for index in (0..solution.size - 1) do
     solution_letter = solution.slice(index, 1)
     guess_letter = guess.slice(index, 1)
@@ -53,9 +57,11 @@ def analyze_guess(solution, guess)
       result += GUESS_WRONG
     end
   end
+
   result
 end
 
+# Game code
 game_intro
 
 solution = generate_solution

@@ -6,6 +6,7 @@ GUESS_RIGHT = 'X'
 GUESS_PRESENT = '*'
 CHOICES = ['A', 'B', 'C', 'D', 'E', 'F']
 
+// Library code
 def gameIntro() {
     println("Let's play Mastermind! The rules are easy, I promise.")
     println("I will pick " + SOLUTION_LENGTH + " letters out of a possible " + CHOICES.size + ".")
@@ -20,9 +21,10 @@ def gameIntro() {
 def generateSolution() {
     def picked = []
     def random = new Random()
+
     while (picked.size() < SOLUTION_LENGTH) {
-        def rnd = random.nextInt(CHOICES.size())
-        def choice = CHOICES[rnd]
+        def choice = CHOICES[random.nextInt(CHOICES.size())]
+
         if (picked.contains(choice)) {
             continue;
         }
@@ -37,6 +39,7 @@ def getGuess() {
     def choices = CHOICES.join("")
     def pattern = ~"[^$choices]"
     def guess = askGuess()
+
     while (pattern.matcher(guess).find() || guess.length() != SOLUTION_LENGTH) {
         println("We were unable to understand your input. Please enter only the letters of your guess and press enter.")
         guess = askGuess()
@@ -70,7 +73,7 @@ def analyzeGuess(String solution, String guess) {
     return result.join("")
 }
 
-
+// Game code
 gameIntro()
 
 solution = generateSolution()

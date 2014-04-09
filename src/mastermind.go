@@ -18,6 +18,7 @@ const GUESS_RIGHT = "X"
 const GUESS_PRESENT = "*"
 var CHOICES = []string{"A", "B", "C", "D", "E", "F"}
 
+// Library code
 func gameIntro() {
   fmt.Println("Let's play Mastermind! The rules are easy, I promise.")
   fmt.Println("I will pick " + strconv.Itoa(SOLUTION_LENGTH) + " letters out of a possible " + strconv.Itoa(len(CHOICES)) + ".")
@@ -29,23 +30,24 @@ func gameIntro() {
   fmt.Println("")
 }
 
-func contains(s []string, e string) bool {
-    for _, a := range s { if a == e { return true } }
+func contains(subject []string, str string) bool {
+    for _, value := range subject { if value == str { return true } }
     return false
 }
 
 func generateSolution() string {
-  var picked []string
-  picked = make([]string, SOLUTION_LENGTH);
+  var picked []string = make([]string, SOLUTION_LENGTH)
   chosen := 0
   rand.Seed(time.Now().UnixNano())
 
+  // length of picked reads as 4, so we have to use a counter
   for chosen < SOLUTION_LENGTH {
-    i := rand.Intn(len(CHOICES))
-    choice := CHOICES[i]
+    choice := CHOICES[rand.Intn(len(CHOICES))]
+
     if (contains(picked, choice)) {
       continue;
     }
+
     picked[chosen] = choice
     chosen++
   }
@@ -56,6 +58,7 @@ func generateSolution() string {
 func isValidGuess(guess string) bool {
   var pattern = "[^" + strings.Join(CHOICES, "") + "]"
   matched, _ := regexp.MatchString(pattern, guess)
+
   if (matched) {
     return false
   }
@@ -70,6 +73,7 @@ func isValidGuess(guess string) bool {
 func getGuess() string {
   var guess = askGuess()
 
+  // while loop
   for isValidGuess(guess) == false {
     fmt.Println("We were unable to understand your input. Please enter only the letters of your guess and press enter.")
     guess = askGuess()
@@ -81,15 +85,14 @@ func getGuess() string {
 func askGuess() string {
   fmt.Println("Available pegs: " + strings.Join(CHOICES, ", "))
   fmt.Print("Enter your guess (pick " + strconv.Itoa(SOLUTION_LENGTH) + "): ")
+
   reader := bufio.NewReader(os.Stdin)
   text, _ := reader.ReadString('\n')
   return strings.ToUpper(strings.TrimSpace(text))
 }
 
 func analyzeGuess(solution string, guess string) string {
-  var answer []string
-  answer = make([]string, SOLUTION_LENGTH);
-
+  var answer []string = make([]string, SOLUTION_LENGTH)
 
   for i := 0; i < SOLUTION_LENGTH; i++ {
     solution_letter := solution[i:i+1]
@@ -107,6 +110,7 @@ func analyzeGuess(solution string, guess string) string {
   return strings.Join(answer, "")
 }
 
+// Game code
 func main() {
   gameIntro()
 
@@ -116,14 +120,14 @@ func main() {
   for true {
     if (guesses > MAX_GUESSES) {
       fmt.Println("You've ran out of guesses! Better luck next time!")
-      break;
+      break
     }
 
     guess := getGuess()
 
     if (guess == solution) {
       fmt.Println("You've guessed correctly, you win!")
-      break;
+      break
     }
 
     analysis := analyzeGuess(solution, guess)

@@ -21,21 +21,17 @@ function gameIntro() {
 }
 
 function generateSolution() {
-    var choices = CHOICES.slice(0);
     var selected = [];
-    var filterFunc = function(item) {
-        if (item === picked) {
-            return false;
-        }
-
-        return true;
-    };
 
     while(selected.length < SOLUTION_LENGTH) {
         var pos = Math.floor((Math.random()*choices.length));
-        var picked = choices[pos];
+        var picked = CHOICES[pos];
+
+        if (selected.contains(picked)) {
+            continue;
+        }
+
         selected.push(picked);
-        choices = choices.filter(filterFunc);
     }
 
     return selected.join('');
@@ -43,6 +39,7 @@ function generateSolution() {
 
 function getGuess(callback) {
     var regex = new RegExp("^[" + CHOICES.join('') + ']+$');
+
     askGuess(function(guess) {
         if (regex.test(guess) && guess.length === SOLUTION_LENGTH) {
             callback(guess);
@@ -86,7 +83,7 @@ function analyzeGuess(solution, guess) {
     return result.join('');
 }
 
-
+// Game code
 gameIntro();
 
 var solution = generateSolution();
