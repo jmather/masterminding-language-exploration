@@ -9,6 +9,7 @@
 -define(GUESS_PRESENT, "*").
 -define(CHOICES, "ABCDEF").
 
+
 game_intro() ->
   io:format("Let's play Mastermind! The rules are easy, I promise.~n"),
   io:format("I will pick ~B letters out of a possible ~B.~n", [?SOLUTION_LENGTH, length(?CHOICES)]),
@@ -33,16 +34,26 @@ generate_solution(Remaining, Choices, Acc) ->
   generate_solution(Remaining - 1, NewChoices, [Choice | Acc]).
 
 
-get_guess() ->
+is_valid_guess(Guess) ->
   GuessRegex = "[^" ++ ?CHOICES ++ "]",
-  Guess = ask_guess(),
   case re:run(Guess, GuessRegex) of
-    nomatch -> Guess;
-    _ ->
+    nomatch ->
+      if
+        length(Guess) == ?SOLUTION_LENGTH -> true;
+        true -> false
+      end;
+    _ -> false
+  end.
+
+
+get_guess() ->
+  Guess = ask_guess(),
+  case is_valid_guess(Guess) of
+    true -> Guess;
+    false ->
       io:format("We were unable to understand your input. Please enter only the letters of your guess and press enter.~n"),
       get_guess()
   end.
-
 
 ask_guess() ->
   ChoiceDisplay = [hd(?CHOICES) | lists:flatmap(fun(X) -> [", ", X] end, tl(?CHOICES))],
@@ -76,10 +87,10 @@ game_loop(_, 0) ->
   io:format("You've ran out of guesses! Better luck next time!~n");
 game_loop(Solution, GuessesRemaining) ->
   Guess = get_guess(),
-  case Guess of
-    Solution ->
+  if
+    Guess == Solution ->
       io:format("You've guessed correctly! You win!~n");
-    _ ->
+    true ->
       Analysis = analyze_guess(Solution, Guess),
       io:format("Result: ~s~n", [Analysis]),
       game_loop(Solution, GuessesRemaining - 1)
