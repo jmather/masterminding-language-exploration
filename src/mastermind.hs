@@ -16,20 +16,27 @@ choices = "ABCDEF"
 -- Library code
 gameIntro :: IO ()
 gameIntro = do
-    putStrLn ("Let's play Mastermind! The rules are easy, I promise.")
-    putStrLn ("I will pick " ++ (show solutionLength) ++ " letters out of a possible " ++ (show (length choices)) ++ ".")
-    putStrLn ("You will then get " ++ (show maxGuesses) ++ " chances to guess which letters I picked.")
-    putStrLn ("For each letter you guess, I will answer as follows:")
-    putStrLn ("\t" ++ guessWrong ++ " means you got it completely wrong.")
-    putStrLn ("\t" ++ guessPresent ++ " means you guessed a letter I used, but it's in the wrong position.")
-    putStrLn ("\t" ++ guessRight ++ " means you guessed that letter right!")
+    -- Normally, " " (space) has the highest precendent, and so this executes fine
+    putStrLn "Let's play Mastermind! The rules are easy, I promise."
+    -- If we start doing other actions, we use $ to say "evaluate everything to the right first"
+    -- Without this, the next line would be executed as: (putStrLn "I will pick ") ++ "something"
+    -- With a $, it becomes then: putStrLn ("a" ++ "b")
+    putStrLn $ "I will pick " ++ (show solutionLength) ++ " letters out of a possible " ++ (show (length choices)) ++ "."
+    putStrLn $ "You will then get " ++ (show maxGuesses) ++ " chances to guess which letters I picked."
+    putStrLn $ "For each letter you guess, I will answer as follows:"
+    putStrLn $ "\t" ++ guessWrong ++ " means you got it completely wrong."
+    putStrLn $ "\t" ++ guessPresent ++ " means you guessed a letter I used, but it's in the wrong position."
+    putStrLn $ "\t" ++ guessRight ++ " means you guessed that letter right!"
     putStrLn ""
 
 
+-- If real Haskell programmers see this function, I am pretty sure they will cry
 randomStr :: (RandomGen g) => g -> [Char]
 randomStr g = do
     take 1 $ randomRs ('A','F') $ unsafePerformIO newStdGen :: [Char]
 
+
+-- <function name> :: <type constraints> => <signature>
 generateSolutionWorker :: (Num a, Eq a) => a -> [Char] -> StdGen -> [Char]
 generateSolutionWorker 0 acc@(h:t) g = acc
 generateSolutionWorker n acc g
@@ -46,7 +53,7 @@ isValidGuess guess
     | isTotalMatch = True
     | otherwise = False
     where pat = "[^" ++ (choices) ++ "]"
-          isTotalMatch = isMatch == False && rightLength
+          isTotalMatch = isMatch == False && rightLength == True
           isMatch = (guess =~ pat) :: Bool
           rightLength = (length guess) == (solutionLength)
 
@@ -67,7 +74,8 @@ askGuess = do
     putStr ("Enter your guess, (pick " ++ (show solutionLength) ++ "): ")
     hFlush stdout
     line <- getLine
-    return $ T.unpack $ T.toUpper $ T.strip $ T.pack line
+    -- . joins functions T.unpack . T.toUpper $ <var> == (T.unpack (T.toUpper <var>))
+    return $ T.unpack . T.toUpper . T.strip $ T.pack line
 
 
 analyzeGuessWorker :: String -> String -> String -> String -> String
@@ -86,6 +94,7 @@ analyzeGuess [] _ = []
 analyzeGuess _ [] = []
 analyzeGuess solution guess = analyzeGuessWorker solution solution guess []
 
+-- Game code
 startGame :: StdGen -> IO ()
 startGame g = do
     gameIntro
