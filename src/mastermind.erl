@@ -1,6 +1,7 @@
 -module(mastermind).
 
--export([start_game/0]).
+-export([run_game/0, run_game/2, game_intro/0, generate_solution/0, generate_solution/3
+        ,is_valid_guess/1, get_guess/0, ask_guess/0, analyze_guess/2, analyze_guess/4]).
 
 -define(SOLUTION_LENGTH, 4).
 -define(MAX_GUESSES, 10).
@@ -80,14 +81,14 @@ analyze_guess(Solution, [_ | SolTail], [GuessChar | GuessTail], Acc) ->
 
 
 % Game code
-start_game() ->
+run_game() ->
   game_intro(),
-  game_loop(generate_solution(), ?MAX_GUESSES).
+  run_game(generate_solution(), ?MAX_GUESSES).
 
 
-game_loop(_, 0) ->
+run_game(_, 0) ->
   io:format("You've ran out of guesses! Better luck next time!~n");
-game_loop(Solution, GuessesRemaining) ->
+run_game(Solution, GuessesRemaining) ->
   Guess = get_guess(),
   if
     Guess == Solution ->
@@ -95,5 +96,5 @@ game_loop(Solution, GuessesRemaining) ->
     true ->
       Analysis = analyze_guess(Solution, Guess),
       io:format("Result: ~s~n", [Analysis]),
-      game_loop(Solution, GuessesRemaining - 1)
+      run_game(Solution, GuessesRemaining - 1)
   end.
