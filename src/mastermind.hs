@@ -71,7 +71,7 @@ askGuess :: IO String
 askGuess = do
     let choiceList = [(head choices)] ++ (concat [", " ++ [x] | x <- (tail choices)])
     putStrLn ("Available pegs: " ++ choiceList)
-    putStr ("Enter your guess, (pick " ++ (show solutionLength) ++ "): ")
+    putStr ("Enter your guess (pick " ++ (show solutionLength) ++ "): ")
     hFlush stdout
     line <- getLine
     -- . joins functions T.unpack . T.toUpper $ <var> == (T.unpack (T.toUpper <var>))
