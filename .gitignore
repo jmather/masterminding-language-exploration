@@ -4,3 +4,7 @@
 *.hi
 *.o
 a.out
+_build/
+mastermind
+mastermind.native
+mastermind.byte
